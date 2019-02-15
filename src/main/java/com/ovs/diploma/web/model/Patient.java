@@ -1,28 +1,30 @@
-package com.ovs.diploma.model;
+package com.ovs.diploma.web.model;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Entity
+@Table(name = "patients")
 public class Patient {
 
-    public String id;
-
+    private String username;
     private String firstName;
-
     private String secondName;
-
     private String birthday;
+    private boolean sex;
+    private String mobilePhone;
 
-    public Patient() {
+    public Patient() {}
 
-    }
-
-    public Patient(String id, String firstName, String secondName, String birthday) {
-        this.id = id;
+    public Patient(String username, String firstName, String secondName, String birthday) {
+        this.username = username;
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
@@ -37,14 +39,17 @@ public class Patient {
         return patients;
     }
 
-    public String getId() {
-        return id;
+    @Id
+    @Column(name = "username", unique = true, nullable = false, length = 45)
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
+    @Column(name = "name", nullable = false, length = 45)
     public String getFirstName() {
         return firstName;
     }
@@ -53,6 +58,7 @@ public class Patient {
         this.firstName = firstName;
     }
 
+    @Column(name = "secondname", nullable = false, length = 45)
     public String getSecondName() {
         return secondName;
     }
@@ -61,6 +67,7 @@ public class Patient {
         this.secondName = secondName;
     }
 
+    @Column(name = "birthday", unique = true, nullable = false, length = 45)
     public String getBirthday() {
         return birthday;
     }
@@ -69,8 +76,21 @@ public class Patient {
         this.birthday = birthday;
     }
 
-    @Override
-    public String toString() {
-        return firstName;
+    @Column(name = "sex", nullable = false)
+    public boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
+    }
+
+    @Column(name = "mobilephone", nullable = false)
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 }
