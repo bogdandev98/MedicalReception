@@ -1,7 +1,10 @@
 package com.ovs.diploma.config;
 
+import com.ovs.diploma.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.
         AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.Filter;
 
 public class AppInitializer extends
         AbstractAnnotationConfigDispatcherServletInitializer {
@@ -21,6 +24,8 @@ public class AppInitializer extends
         return new String[] { "/" };
     }
 
-
-
+    @Override
+    protected Filter[] getServletFilters() {
+        return new Filter[]{new CharacterEncodingFilter()};
+    }
 }

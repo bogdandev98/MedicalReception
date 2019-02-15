@@ -1,14 +1,8 @@
 package com.ovs.diploma.web.model;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "patients")
@@ -20,23 +14,37 @@ public class Patient {
     private String birthday;
     private boolean sex;
     private String mobilePhone;
+    private Set<Reception> receptions = new HashSet<Reception>(0);
 
-    public Patient() {}
+    public Patient(String username) {
+        this.username = username;
+        this.firstName = "";
+        this.secondName = "";
+        this.birthday = "";
+        this.sex = true;
+        this.mobilePhone = "+380";
+    }
 
-    public Patient(String username, String firstName, String secondName, String birthday) {
+    public Patient() {
+    }
+
+    public Patient(String username, String firstName, String secondName, String birthday, boolean sex, String mobilePhone) {
         this.username = username;
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
+        this.sex = sex;
+        this.mobilePhone = mobilePhone;
     }
 
-    public static List<Patient> getListPatients(){
-        List<Patient> patients = new ArrayList<>();
-        patients.add(new Patient("1", "Bohdan","Ovsie","18.02"));
-        patients.add(new Patient("2", "Bohda","Ovsien","18.02"));
-        patients.add(new Patient("3", "Bohd","Ovsienk","18.02"));
-        patients.add(new Patient("4", "Boh","Ovsienko","18.02"));
-        return patients;
+    public Patient(String username, String firstName, String secondName, String birthday, boolean sex, String mobilePhone, Set<Reception> receptions) {
+        this.username = username;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.birthday = birthday;
+        this.sex = sex;
+        this.mobilePhone = mobilePhone;
+        this.receptions = receptions;
     }
 
     @Id
@@ -67,7 +75,7 @@ public class Patient {
         this.secondName = secondName;
     }
 
-    @Column(name = "birthday", unique = true, nullable = false, length = 45)
+    @Column(name = "birthday",  nullable = false, length = 45)
     public String getBirthday() {
         return birthday;
     }
@@ -85,12 +93,34 @@ public class Patient {
         this.sex = sex;
     }
 
-    @Column(name = "mobilephone", nullable = false)
+    @Column(name = "mobilephone", nullable = false, length = 45)
     public String getMobilePhone() {
         return mobilePhone;
     }
 
     public void setMobilePhone(String mobilePhone) {
         this.mobilePhone = mobilePhone;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
+    public Set<Reception> getReceptions() {
+        return this.receptions;
+    }
+
+    public void setReceptions(Set<Reception> receptions) {
+        this.receptions = receptions;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", sex=" + sex +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", receptions=" + receptions +
+                '}';
     }
 }

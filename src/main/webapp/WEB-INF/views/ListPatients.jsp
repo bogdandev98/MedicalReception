@@ -1,25 +1,28 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <html>
 <head>
-    <title>Example</title>
+    <title>Пацієнти</title>
 </head>
 <body>
 
-<h2>Patients</h2>
+<h2>Пацієнти</h2>
 
-<c:forEach items="${patients}" var="patient" >
-    <h4> <a href="../${patient.id}">${patient.firstName} ${patient.secondName}</a> </h4>
-</c:forEach>
+<sec:authorize access="hasRole('ROLE_DOCTOR')">
+    <c:forEach items="${patients}" var="patient" >
+        <h4> <a href="../doctor/${patient.username}">${patient.firstName} ${patient.secondName}</a> </h4>
+    </c:forEach>
+</sec:authorize>
 
-<c:url value="/logout" var="logoutUrl" />
-<form action="${logoutUrl}" method="post" id="logoutForm">
-    <input type="hidden" name="${_csrf.parameterName}"
-           value="${_csrf.token}" />
-</form>
+<sec:authorize access="hasRole('ROLE_NURSE')">
+    <c:forEach items="${patients}" var="patient" >
+        <h4> <a href="../nurse/${patient.username}">${patient.firstName} ${patient.secondName}</a> </h4>
+    </c:forEach>
+</sec:authorize>
 
+<h4> <a href="../logout">Вийти</a> </h4>
 </body>
 </html>

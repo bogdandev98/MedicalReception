@@ -1,42 +1,41 @@
 package com.ovs.diploma.web.model;
 
 import com.ovs.diploma.security.model.UserRole;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "patients")
-public class Patient {
+@Table(name = "doctors")
+public class Doctor {
 
     private String username;
     private String firstName;
     private String secondName;
     private String birthday;
-    private boolean sex;
-    private String mobilePhone;
-    private Set<Reception> receptions;
+    private String resume;
+    private Set<Reception> receptions = new HashSet<Reception>(0);
 
-    public Patient() {}
+    public Doctor() {}
 
-    public Patient(String username, String firstName, String secondName, String birthday) {
+    public Doctor(String username, String firstName, String secondName, String birthday, String resume, Set<Reception> receptions) {
         this.username = username;
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
+        this.resume = resume;
+        this.receptions = receptions;
     }
 
-    public static List<Patient> getListPatients(){
-        List<Patient> patients = new ArrayList<>();
-        patients.add(new Patient("1", "Bohdan","Ovsie","18.02"));
-        patients.add(new Patient("2", "Bohda","Ovsien","18.02"));
-        patients.add(new Patient("3", "Bohd","Ovsienk","18.02"));
-        patients.add(new Patient("4", "Boh","Ovsienko","18.02"));
-        return patients;
+    public Doctor(String username, String firstName, String secondName, String birthday, String resume) {
+        this.username = username;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.birthday = birthday;
+        this.resume = resume;
     }
 
     @Id
@@ -67,7 +66,7 @@ public class Patient {
         this.secondName = secondName;
     }
 
-    @Column(name = "birthday", unique = true, nullable = false, length = 45)
+    @Column(name = "birthday",  nullable = false, length = 45)
     public String getBirthday() {
         return birthday;
     }
@@ -76,25 +75,16 @@ public class Patient {
         this.birthday = birthday;
     }
 
-    @Column(name = "sex", nullable = false)
-    public boolean getSex() {
-        return sex;
+    @Column(name = "resume",  length = 150)
+    public String getResume() {
+        return this.resume;
     }
 
-    public void setSex(boolean sex) {
-        this.sex = sex;
+    public void setResume(String resume) {
+        this.resume = resume;
     }
 
-    @Column(name = "mobilephone", nullable = false)
-    public String getMobilePhone() {
-        return mobilePhone;
-    }
-
-    public void setMobilePhone(String mobilePhone) {
-        this.mobilePhone = mobilePhone;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor")
     public Set<Reception> getReceptions() {
         return this.receptions;
     }

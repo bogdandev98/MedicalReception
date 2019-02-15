@@ -27,7 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-
     http.authorizeRequests()
             .antMatchers("/403").permitAll()
             .antMatchers("/patient/**").access("hasRole('ROLE_PATIENT')")
@@ -38,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordParameter("password")
             .and().logout().logoutSuccessUrl("/login?logout")
             .and().exceptionHandling().accessDeniedPage("/403")
-            .and().csrf();
+            .and().csrf().disable();
   }
 
   @Bean

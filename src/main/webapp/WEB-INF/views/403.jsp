@@ -12,5 +12,6 @@
 		</c:otherwise>
 	</c:choose>
 
+	<h4> <a href="../logout">Вийти</a> </h4>
 </body>
 </html>
