@@ -29,13 +29,11 @@ public class PatientDetailsDaoImp implements PatientDetailsDao{
         } else {
             return null;
         }
-
     }
 
     @Transactional()
     @Override
     public String savePatient(Patient patient) {
-        System.out.println(patient.getFirstName());
         sessionFactory.getCurrentSession().saveOrUpdate(patient);
         return null;
     }
@@ -64,4 +62,6 @@ public class PatientDetailsDaoImp implements PatientDetailsDao{
                 .setParameter(0, username)
                 .list();
     }
+
+
 }

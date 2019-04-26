@@ -18,6 +18,7 @@ public class Doctor {
     private String birthday;
     private String resume;
     private Set<Reception> receptions = new HashSet<Reception>(0);
+    private Set<Recipe> recipes;
 
     public Doctor() {}
 
@@ -91,5 +92,14 @@ public class Doctor {
 
     public void setReceptions(Set<Reception> receptions) {
         this.receptions = receptions;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor")
+    public Set<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
     }
 }

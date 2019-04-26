@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -23,6 +24,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @Import({ SecurityConfig.class })
 public class WebConfig {
+
+//    @Bean
+//    public CommonsMultipartResolver multipartResolver(){
+//        CommonsMultipartResolver resolver=new CommonsMultipartResolver();
+//        resolver.setDefaultEncoding("utf-8");
+//        return resolver;
+//    }
+@Bean(name = "multipartResolver")
+public CommonsMultipartResolver multipartResolver() {
+    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+    multipartResolver.setMaxUploadSize(10485760);
+    return multipartResolver;
+}
 
     @Bean
     public SessionFactory sessionFactory() {
@@ -68,16 +82,5 @@ public class WebConfig {
         viewResolver.setContentType("text/html; charset=UTF-8");
         return viewResolver;
     }
-
-//    @Bean
-//    public FilterRegistrationBean <CharacterEncodingFilter> filterRegistrationBean() {
-//        FilterRegistrationBean< CharacterEncodingFilter > registrationBean = new FilterRegistrationBean();
-//        CharacterEncodingFilter customURLFilter = new CharacterEncodingFilter();
-//        registrationBean.setFilter(customURLFilter);
-//        registrationBean.addUrlPatterns("/*");
-//        registrationBean.setOrder(2); //set precedence
-//        return registrationBean;
-//    }
-
 
 }

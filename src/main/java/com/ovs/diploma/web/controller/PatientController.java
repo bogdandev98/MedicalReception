@@ -1,7 +1,9 @@
 package com.ovs.diploma.web.controller;
 
 import com.ovs.diploma.web.dao.PatientDetailsDao;
+import com.ovs.diploma.web.dao.ReceptionDetailsDao;
 import com.ovs.diploma.web.model.Patient;
+import com.ovs.diploma.web.model.Reception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,9 @@ public class PatientController {
 
     @Autowired
     PatientDetailsDao patientDetailsDao;
+
+    @Autowired
+    ReceptionDetailsDao receptionDetailsDao;
 
     @RequestMapping("/homepage")
     public String patientMapping(Model model){
@@ -66,10 +71,29 @@ public class PatientController {
     }
 
     @RequestMapping(value = "/reception")
-    public ModelAndView reception(){
-
-        return new ModelAndView("reception");
+    public String reception(Model model){
+        String username=SecurityContextHolder.getContext().getAuthentication().getName();
+        Patient patient= patientDetailsDao.findPatientByUsername(username);
+        Reception reception = new Reception(patient);
+        model.addAttribute("receptionForm", reception);
+        return "reception";
     }
 
+    @RequestMapping(value ="/saveReception")
+    public String saveReception(@ModelAttribute("receptionForm") Reception reception,
+                                BindingResult result, final RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            //String username=SecurityContextHolder.getContext().getAuthentication().getName();
+            //model.addAttribute("patientForm", patientDetailsDao.findPatientByUsername(username));
+            return "edit";
+        } else {
+            redirectAttributes.addFlashAttribute("css", "success");
+            redirectAttributes.addFlashAttribute("msg", "User updated successfully!");
+
+            receptionDetailsDao.saveReception(reception);
+            return "redirect:/patient/homepage" ;
+        }
+
+    }
 
 }

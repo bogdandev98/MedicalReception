@@ -15,6 +15,7 @@ public class Patient {
     private boolean sex;
     private String mobilePhone;
     private Set<Reception> receptions = new HashSet<Reception>(0);
+    private Set<Recipe> recipes;
 
     public Patient(String username) {
         this.username = username;
@@ -28,24 +29,6 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(String username, String firstName, String secondName, String birthday, boolean sex, String mobilePhone) {
-        this.username = username;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.birthday = birthday;
-        this.sex = sex;
-        this.mobilePhone = mobilePhone;
-    }
-
-    public Patient(String username, String firstName, String secondName, String birthday, boolean sex, String mobilePhone, Set<Reception> receptions) {
-        this.username = username;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.birthday = birthday;
-        this.sex = sex;
-        this.mobilePhone = mobilePhone;
-        this.receptions = receptions;
-    }
 
     @Id
     @Column(name = "username", unique = true, nullable = false, length = 45)
@@ -109,6 +92,15 @@ public class Patient {
 
     public void setReceptions(Set<Reception> receptions) {
         this.receptions = receptions;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
+    public Set<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
     }
 
     @Override

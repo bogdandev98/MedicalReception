@@ -15,6 +15,7 @@ public class Reception {
     private Date date;
     private boolean examination;
     private boolean therapy;
+    private String addres;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -78,6 +79,12 @@ public class Reception {
         this.patient = patient;
         this.doctor = doctor;
         this.date = date;
+    }
+
+    public Reception(Patient patient) {
+        this.patient = patient;
+        this.doctor = null;
+        this.date = null;
     }
 
     public Reception(){
